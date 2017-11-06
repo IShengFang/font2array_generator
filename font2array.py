@@ -19,7 +19,7 @@ def Font2Image(hanzi, size, font):
     draw.text ( (0,0), hanzi, fill=255, font=font )
     return im
 
-def font2array(font, size, encoding):
+def Font2array(font, size, encoding):
     
     '''
     Input font (.ttf), size(int), encoding list(list or string)
@@ -47,7 +47,7 @@ def font2array_chennel(font, size, encoding):
          PIL
     '''
     
-    for hanzi in encoding:
+    for hanzi in chrlist:
         im    = Font2Image(hanzi, size, font)
         array = np.array(im)
         array = array.reshape(size, size, 1)
@@ -84,7 +84,7 @@ def font2array_keras_fit(font, size, encoding, batchsize, suffle= True):
     #Make infinite loop for fit_generator
     while True:
         
-        suffle_chrlist = list(encoding)
+        suffle_chrlist = list(chrlist)
         
         if suffle:
             np.random.shuffle(suffle_chrlist) #shuffle for fitting
@@ -98,5 +98,5 @@ def font2array_keras_fit(font, size, encoding, batchsize, suffle= True):
             batch_array = []
             for hanzi in batch_chrlist:
                 batch_array.append(img_to_array(Font2Image(hanzi, size, font)))
-            batch_array_normalized = np.array(batch_array)/256
+            batch_array_normalized = np.array(batch_array)/255
             yield batch_array_normalized, batch_array_normalized
